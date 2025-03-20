@@ -32,32 +32,31 @@
     </section>
 
     <script>
-        const apiKey = 'ag01XVjPExar1vTi2LyA5daqRKXJDKYr'; // Dein Onlyfy-API-Schlüssel
-        const apiUrl = 'https://api.prescreenapp.io/v1/jobs'; // Onlyfy-API-Endpunkt
+        const apiUrl = 'https://dreifuerst-consulting.onlyfy.io/job/list/3c86fziqk1tqqi05lhrfoxlnk743akn?format=json';
 
-        fetch(apiUrl, {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Accept': 'application/json'
-            }
-        })
+        fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
                 return response.json();
             })
-            .then(jobs => {
+            .then(data => {
                 const jobList = document.getElementById('job-list');
                 jobList.innerHTML = ''; // Bereinige vorherigen Inhalt
-                jobs.forEach(job => {
-                    const jobDiv = document.createElement('div');
-                    jobDiv.innerHTML = `
-                        <h3><a href="${job.application_url || '#'}" target="_blank">${job.title}</a></h3>
-                        <p>${job.description || 'Keine Beschreibung verfügbar'}</p>
-                    `;
-                    jobList.appendChild(jobDiv);
-                });
+                const jobs = data.jobs; // Zugriff auf das "jobs"-Array
+                if (jobs && jobs.length > 0) {
+                    jobs.forEach(job => {
+                        const jobDiv = document.createElement('div');
+                        jobDiv.innerHTML = `
+                            <h3><a href="${job.showUrl || '#'}" target="_blank">${job.title}</a></h3>
+                            <p>${job.description || 'Keine Beschreibung verfügbar'}</p>
+                        `;
+                        jobList.appendChild(jobDiv);
+                    });
+                } else {
+                    jobList.innerHTML = '<p>Keine Stellenanzeigen verfügbar.</p>';
+                }
             })
             .catch(error => {
                 console.error('Fehler beim Laden der Stellenanzeigen:', error);
