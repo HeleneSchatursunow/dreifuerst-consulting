@@ -23,47 +23,13 @@
 
     <section id="jobs">
         <h2>Aktuelle Stellenanzeigen</h2>
-        <div id="job-list"></div>
+        <div id="psJobWidget"></div>
+        <script src="https://dreifuerst-consulting.onlyfy.jobs/widget/iframe.js"></script>
     </section>
 
     <section id="contact">
         <h2>Kontakt</h2>
         <p>E-Mail: info@dreifuerst-consulting.de</p>
     </section>
-
-    <script>
-        const apiUrl = 'https://dreifuerst-consulting.onlyfy.io/job/list/3c86fziqk1tqqi05lhrfoxlnk743akn?format=json';
-    
-        fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const jobList = document.getElementById('job-list');
-                jobList.innerHTML = '';
-                const jobs = data.jobs;
-                if (jobs && jobs.length > 0) {
-                    console.log('API-Antwort:', jobs); // Logge die Jobs
-                    jobs.forEach(job => {
-                        const jobDiv = document.createElement('div');
-                        jobDiv.innerHTML = `
-                            <h3><a href="${job.showUrl || '#'}" target="_blank">${job.title}</a></h3>
-                            <p>${job.description || 'Keine Beschreibung verfügbar'}</p>
-                        `;
-                        jobList.appendChild(jobDiv);
-                    });
-                } else {
-                    jobList.innerHTML = '<p>Keine Stellenanzeigen verfügbar.</p>';
-                }
-            })
-            .catch(error => {
-                console.error('Fehler beim Laden der Stellenanzeigen:', error);
-                const jobList = document.getElementById('job-list');
-                jobList.innerHTML = '<p>Stellenanzeigen konnten nicht geladen werden.</p>';
-            });
-    </script>
 </body>
 </html>
