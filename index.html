@@ -33,7 +33,7 @@
 
     <script>
         const apiUrl = 'https://dreifuerst-consulting.onlyfy.io/job/list/3c86fziqk1tqqi05lhrfoxlnk743akn?format=json';
-
+    
         fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
@@ -43,9 +43,10 @@
             })
             .then(data => {
                 const jobList = document.getElementById('job-list');
-                jobList.innerHTML = ''; // Bereinige vorherigen Inhalt
-                const jobs = data.jobs; // Zugriff auf das "jobs"-Array
+                jobList.innerHTML = '';
+                const jobs = data.jobs;
                 if (jobs && jobs.length > 0) {
+                    console.log('API-Antwort:', jobs); // Logge die Jobs
                     jobs.forEach(job => {
                         const jobDiv = document.createElement('div');
                         jobDiv.innerHTML = `
