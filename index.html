@@ -33,7 +33,12 @@
 
     <script>
         fetch('jobs.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(jobs => {
                 const jobList = document.getElementById('job-list');
                 jobs.forEach(job => {
@@ -41,6 +46,11 @@
                     jobDiv.innerHTML = `<h3>${job.title}</h3><p>${job.description}</p>`;
                     jobList.appendChild(jobDiv);
                 });
+            })
+            .catch(error => {
+                console.error('Fehler beim Laden der Stellenanzeigen:', error);
+                const jobList = document.getElementById('job-list');
+                jobList.innerHTML = '<p>Stellenanzeigen konnten nicht geladen werden.</p>';
             });
     </script>
 </body>
