@@ -32,7 +32,15 @@
     </section>
 
     <script>
-        fetch('jobs.json')
+        const apiKey = 'ag01XVjPExar1vTi2LyA5daqRKXJDKYr'; // Dein Onlyfy-API-Schlüssel
+        const apiUrl = 'https://api.prescreenapp.io/v1/jobs'; // Onlyfy-API-Endpunkt
+
+        fetch(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Accept': 'application/json'
+            }
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
@@ -41,9 +49,13 @@
             })
             .then(jobs => {
                 const jobList = document.getElementById('job-list');
+                jobList.innerHTML = ''; // Bereinige vorherigen Inhalt
                 jobs.forEach(job => {
                     const jobDiv = document.createElement('div');
-                    jobDiv.innerHTML = `<h3>${job.title}</h3><p>${job.description}</p>`;
+                    jobDiv.innerHTML = `
+                        <h3><a href="${job.application_url || '#'}" target="_blank">${job.title}</a></h3>
+                        <p>${job.description || 'Keine Beschreibung verfügbar'}</p>
+                    `;
                     jobList.appendChild(jobDiv);
                 });
             })
