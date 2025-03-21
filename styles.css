@@ -22,3 +22,13 @@ section {
     padding: 1em;
     margin: 1em 0;
 }
+.team-photos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.team-photos img {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
